@@ -37,6 +37,9 @@ font-family:var(--display);font-weight:400;font-size:clamp(11px,3.4vh,16px);line
 .rule.up{background:var(--orange)}.rule.down{background:var(--mint)}
 .rule.up b{animation:bobU 1.2s ease-in-out infinite}.rule.down b{animation:bobD 1.2s ease-in-out infinite}
 @keyframes bobU{50%{transform:translateY(-5px)}}@keyframes bobD{50%{transform:translateY(5px)}}
+.durs{display:flex;gap:8px;margin-bottom:2vh}
+.durs button{font-family:var(--display);border:var(--line);border-radius:30px;background:transparent;color:var(--night);padding:.6vh 14px;font-size:clamp(12px,3.8vh,18px)}
+.durs button.on{background:var(--c);color:#fff;box-shadow:2px 3px 0 var(--night)}
 .btns{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}
 button.main{font-family:var(--display);font-weight:400;border:var(--line);border-radius:40px;padding:1.3vh 30px;font-size:clamp(15px,4.6vh,22px);background:var(--sun);color:var(--night);box-shadow:3px 4px 0 var(--night);transition:transform .1s,box-shadow .1s}
 button.main:active{transform:translate(3px,4px);box-shadow:0 0 0 var(--night)}
@@ -48,8 +51,10 @@ button.ghost{background:transparent}
 #play.ok{background:var(--mint)}#play.no{background:var(--orange)}
 .big{position:relative;font-family:var(--display);font-weight:400;color:#fff;font-size:clamp(34px,17vh,120px);line-height:1.02;padding:0 6vw;word-break:break-word;text-shadow:4px 4px 0 var(--night)}
 #bar{position:absolute;top:0;left:0;height:10px;width:100%;background:var(--sun);border-bottom:var(--line)}
-#hud{position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:0;right:0;display:flex;justify-content:space-between;padding:0 max(22px,env(safe-area-inset-right))}
+#hud{align-items:center;position:absolute;top:calc(env(safe-area-inset-top) + 16px);left:0;right:0;display:flex;justify-content:space-between;padding:0 max(22px,env(safe-area-inset-right))}
 .pill{font-family:var(--display);font-size:clamp(18px,6.5vh,32px);background:var(--night);color:var(--sun);border-radius:30px;padding:2px 20px;min-width:70px;box-shadow:3px 3px 0 rgba(0,0,0,.3)}
+.quit{font-family:var(--display);border:var(--line);background:var(--cream);color:var(--night);border-radius:30px;min-width:46px;padding:.4vh 16px;font-size:clamp(14px,4.8vh,22px);box-shadow:3px 3px 0 rgba(0,0,0,.3);transition:background .15s}
+.quit.sure{background:var(--night);color:var(--sun)}
 #score::before{content:"★ ";color:var(--cream)}
 #flash{position:absolute;font-family:var(--display);color:var(--night);font-size:clamp(40px,22vh,150px);opacity:0;pointer-events:none;text-shadow:3px 3px 0 rgba(255,255,255,.5)}
 #flash.show{animation:pop .6s}

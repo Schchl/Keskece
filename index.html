@@ -17,7 +17,7 @@
   <header class="brand">
     <div class="logo"><span>Keskecé</span><span>?</span></div>
     <p>Pose le téléphone sur ton front.<br>Tes amis te font deviner&nbsp;!</p>
-    <div class="tags"><i>⏱ 1 min</i><i>🤳 Inclinaison</i></div>
+    <div class="tags"><i>⏱ Durée au choix</i><i>🤳 Inclinaison</i></div>
   </header>
   <div class="grid" id="grid"></div>
 </section>
@@ -31,13 +31,16 @@
       <div class="rule up"><b>⬆</b>Écran vers le plafond<small>Je passe</small></div>
       <div class="rule down"><b>⬇</b>Écran vers le sol<small>Trouvé&nbsp;!</small></div>
     </div>
+    <div class="durs" id="durs">
+      <button data-s="30">30s</button><button data-s="45">45s</button><button data-s="60">1min</button><button data-s="90">1min30</button><button data-s="120">2min</button>
+    </div>
     <div class="btns"><button class="main" id="go">C'est parti</button><button class="main ghost" id="back">Retour</button></div>
   </div>
 </section>
 
 <section id="play" class="screen">
   <div id="bar"></div>
-  <div id="hud"><span class="pill" id="time">60</span><span class="pill" id="score">0</span></div>
+  <div id="hud"><span class="pill" id="time">60</span><button class="quit" id="quit" aria-label="Quitter la partie">✕</button><span class="pill" id="score">0</span></div>
   <div class="big" id="word"></div>
   <div id="flash"></div>
   <div id="hint">Touche à gauche pour passer · à droite pour valider</div>

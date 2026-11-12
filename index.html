@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no">
+<meta name="theme-color" content="#170a35">
+<title>Keskecé ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bagel+Fat+One&family=Nunito:wght@700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div id="rot"><b>📱</b><p>Tourne ton téléphone<br>en mode paysage</p></div>
+
+<section id="menu" class="screen on">
+  <header class="brand">
+    <div class="logo"><span>Keskecé</span><span>?</span></div>
+    <p>Pose le téléphone sur ton front.<br>Tes amis te font deviner&nbsp;!</p>
+    <div class="tags"><i>⏱ 1 min</i><i>🤳 Inclinaison</i></div>
+  </header>
+  <div class="grid" id="grid"></div>
+</section>
+
+<section id="ready" class="screen">
+  <div class="card">
+    <div class="badge" id="rEm"></div>
+    <h2 id="rTitle"></h2>
+    <p>Téléphone sur le front, écran tourné vers les autres.</p>
+    <div class="rules">
+      <div class="rule up"><b>⬆</b>Écran vers le plafond<small>Je passe</small></div>
+      <div class="rule down"><b>⬇</b>Écran vers le sol<small>Trouvé&nbsp;!</small></div>
+    </div>
+    <div class="btns"><button class="main" id="go">C'est parti</button><button class="main ghost" id="back">Retour</button></div>
+  </div>
+</section>
+
+<section id="play" class="screen">
+  <div id="bar"></div>
+  <div id="hud"><span class="pill" id="time">60</span><span class="pill" id="score">0</span></div>
+  <div class="big" id="word"></div>
+  <div id="flash"></div>
+  <div id="hint">Touche à gauche pour passer · à droite pour valider</div>
+</section>
+
+<section id="end" class="screen">
+  <div class="card wide">
+    <div class="badge">🏆</div>
+    <h2 id="eScore"></h2>
+    <p id="eCat"></p>
+    <ul id="eList"></ul>
+    <div class="btns"><button class="main" id="again">Rejouer</button><button class="main ghost" id="menuBtn">Autre thème</button></div>
+  </div>
+</section>
+<script src="game.js"></script>
+</body>
+</html>

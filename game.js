@@ -58,7 +58,7 @@ function act(ok){
   if(state!=="play")return;
   locked=true;log.push({w:cur,ok});
   if(ok){score++;$('score').textContent=score;beep(900,.15)}else beep(300,.15);
-  if(navigator.vibrate)navigator.vibrate(ok?80:[40,40,40]);
+  if(navigator.vibrate)navigator.vibrate(ok?[160]:[70,60,70]); // trouvé = 1 vibration longue, passé = 2 courtes
   const p=$('play'),f=$('flash');
   p.classList.add(ok?'ok':'no');f.textContent=ok?"TROUVÉ !":"PASSE";f.classList.remove('show');void f.offsetWidth;f.classList.add('show');
   $('word').style.visibility='hidden';state="flash";
@@ -66,7 +66,9 @@ function act(ok){
     if(state==="flash"&&left>0){state="play";nextWord()}},600);
 }
 function finish(){
-  resetQuit();clearInterval(timer);state="end";beep(440,.5);
+  resetQuit();clearInterval(timer);
+  if(state==="play")log.push({w:cur,ok:false}); // mot affiché à la fin du temps = non deviné
+  state="end";beep(440,.5);
   if(wake)wake.release().catch(()=>{});
   if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   $('eScore').textContent=score+(score>1?" mots trouvés":" mot trouvé");

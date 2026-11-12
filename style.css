@@ -12,9 +12,7 @@ padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-
 /* Menu */
 #menu{gap:4vw;padding-left:max(4vw,env(safe-area-inset-left));padding-right:max(4vw,env(safe-area-inset-right))}
 .brand{flex:0 0 34%;text-align:left}
-.logo{font-family:var(--display);font-size:clamp(30px,13vh,76px);line-height:.9;transform:rotate(-4deg);margin-bottom:2vh}
-.logo span{display:block;color:var(--sun);text-shadow:3px 3px 0 var(--pink),6px 6px 0 var(--night)}
-.logo span+span{color:var(--cream);margin-left:8%}
+.logo{display:block;width:auto;height:auto;max-width:100%;max-height:34vh;margin:0 0 2vh -2%;transform:rotate(-3deg);filter:drop-shadow(3px 4px 0 rgba(0,0,0,.35))}
 .brand p{margin:0 0 1.5vh;font-size:clamp(12px,3.6vh,17px);line-height:1.35;opacity:.85}
 .tags i{display:inline-block;font-style:normal;font-size:clamp(11px,3.2vh,14px);padding:5px 11px;border-radius:20px;border:2px solid rgba(255,244,220,.4);margin-right:6px}
 .grid{flex:1;max-height:100%;overflow-y:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;padding:14px 8px 18px 4px}

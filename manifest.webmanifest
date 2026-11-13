@@ -1,0 +1,18 @@
+{
+  "id": "./",
+  "name": "Keskecé ?",
+  "short_name": "Keskecé",
+  "description": "Jeu de devinettes : pose le téléphone sur ton front et fais-toi deviner le mot !",
+  "lang": "fr",
+  "start_url": "./",
+  "scope": "./",
+  "display": "fullscreen",
+  "display_override": ["fullscreen", "standalone"],
+  "orientation": "landscape",
+  "background_color": "#170a35",
+  "theme_color": "#170a35",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

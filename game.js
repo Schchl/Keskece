@@ -23,6 +23,15 @@ $('go').onclick=start;
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
 function nextWord(){if(!deck.length)deck=shuffle(CATS[cat].w);cur=deck.pop();$('word').textContent=cur}
 
+// Plein écran : le navigateur l'autorise seulement après un geste, donc dès le premier toucher.
+// (Installée sur l'écran d'accueil, l'appli s'ouvre déjà en plein écran grâce au manifest.)
+const standalone=matchMedia('(display-mode: fullscreen)').matches||matchMedia('(display-mode: standalone)').matches||navigator.standalone;
+async function goFull(){
+  if(standalone||document.fullscreenElement||!document.documentElement.requestFullscreen)return;
+  try{await document.documentElement.requestFullscreen({navigationUI:'hide'});await screen.orientation.lock('landscape')}catch(e){}
+}
+if(matchMedia('(pointer:coarse)').matches)addEventListener('pointerup',goFull);
+
 // Capteur d'orientation (iOS demande une autorisation)
 async function enableTilt(){
   if(tiltOn)return;
@@ -32,23 +41,34 @@ async function enableTilt(){
     addEventListener('deviceorientation',onTilt);tiltOn=true;
   }catch(e){}
 }
+// Réglages de l'inclinaison (en degrés, par rapport à la position neutre du téléphone sur le front)
+const TILT_UP=30,TILT_DOWN=35,TILT_REST=15;
+let th=null,th0=0; // th = inclinaison lissée, th0 = position neutre
+const dbg=location.hash==="#debug"&&document.body.appendChild(Object.assign(document.createElement('div'),{style:'position:fixed;left:8px;bottom:30px;z-index:50;font:12px monospace;color:#fff;background:rgba(0,0,0,.5);padding:2px 6px'}));
 function onTilt(e){
-  if(state!=="play"||e.beta==null||e.gamma==null)return;
+  if(e.beta==null||e.gamma==null)return;
   const z=Math.cos(e.beta*Math.PI/180)*Math.cos(e.gamma*Math.PI/180); // +1 écran vers le ciel, -1 vers le sol
-  if(locked){if(Math.abs(z)<0.3)locked=false;return}
-  if(z<-0.6)act(true);else if(z>0.6)act(false);
+  const a=Math.asin(Math.max(-1,Math.min(1,z)))*180/Math.PI;          // angle par rapport à la verticale
+  th=th===null?a:th+(a-th)*.6;
+  if(state==="count"){th0=Math.max(-45,Math.min(45,th))}              // pendant le compte à rebours : on mémorise la position neutre
+  if(dbg)dbg.textContent="angle "+Math.round(th)+"° · neutre "+Math.round(th0)+"° · écart "+Math.round(th-th0)+"°";
+  if(state!=="play")return;
+  const d=th-th0;
+  if(locked){if(Math.abs(d)<TILT_REST)locked=false;return}
+  if(d<-TILT_DOWN)act(true);else if(d>TILT_UP)act(false);              // vers le sol = trouvé, vers le plafond = passe
+  else if(Math.abs(d)<TILT_REST)th0+=d*.004;                           // la position neutre suit lentement la posture
 }
 
 async function start(){
   await enableTilt();
-  try{await document.documentElement.requestFullscreen();await screen.orientation.lock('landscape')}catch(e){}
+  await goFull();
   try{wake=await navigator.wakeLock.request('screen')}catch(e){}
   resetQuit();deck=shuffle(CATS[cat].w);score=0;log=[];left=duration;
   $('score').textContent=0;$('time').textContent=duration;$('bar').style.transition='none';$('bar').style.width='100%';
   show('play');state="count";locked=true;
   let n=3;$('word').textContent="Prépare-toi… "+n;
   cd=setInterval(()=>{n--;if(n>0)$('word').textContent="Prépare-toi… "+n;
-    else{clearInterval(cd);state="play";nextWord();beep(660,.15);run()}},1000);
+    else{clearInterval(cd);locked=false;state="play";nextWord();beep(660,.15);run()}},1000);
 }
 function run(){
   $('bar').style.transition='width '+duration+'s linear';$('bar').style.width='0%';
@@ -70,7 +90,6 @@ function finish(){
   if(state==="play")log.push({w:cur,ok:false}); // mot affiché à la fin du temps = non deviné
   state="end";beep(440,.5);
   if(wake)wake.release().catch(()=>{});
-  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   $('eScore').textContent=score+(score>1?" mots trouvés":" mot trouvé");
   $('eCat').textContent=CATS[cat].e+" "+CATS[cat].n;
   $('eList').innerHTML=log.map(l=>`<li class="${l.ok?'ok':'no'}">${l.w}</li>`).join('');
@@ -82,7 +101,6 @@ function resetQuit(){clearTimeout(qt);$('quit').classList.remove('sure');$('quit
 function quit(){
   clearInterval(cd);clearInterval(timer);state="menu";resetQuit();
   if(wake)wake.release().catch(()=>{});
-  if(document.fullscreenElement)document.exitFullscreen().catch(()=>{});
   $('play').classList.remove('ok','no');$('word').style.visibility='visible';
   show('menu');
 }
@@ -97,3 +115,6 @@ addEventListener('keydown',e=>{if(e.key==="ArrowDown"||e.key==="ArrowRight")act(
 // Sons
 let ac;function beep(f,d){try{ac=ac||new(window.AudioContext||window.webkitAudioContext)();const o=ac.createOscillator(),g=ac.createGain();
   o.frequency.value=f;g.gain.value=.15;o.connect(g);g.connect(ac.destination);o.start();o.stop(ac.currentTime+d)}catch(e){}}
+
+// Fonctionne aussi hors connexion (réseau d'abord, cache en secours)
+if('serviceWorker' in navigator&&(location.protocol==='https:'||location.hostname==='localhost'))navigator.serviceWorker.register('sw.js').catch(()=>{});
